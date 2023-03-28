@@ -4,12 +4,15 @@ import Avtar from '../components/Avtar';
 
 const ProjectList = ({ docs }) => {
   return (
-    <div className="grid grid-cols-3 gap-2 mt-10 h-[80vh] scrollbar overflow-y-scroll">
+    <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2  grid-cols-1  justify-start place-content-start gap-5 mt-10 h-[80vh] scrollbar overflow-y-auto">
       {docs &&
         docs.map((doc) => {
           return (
-            <Link to={`/detales/${doc.id}`} className="project p-4  bg-gray-800 rounded-xl">
-              <p className="text-xl">{doc.name}</p>
+            <Link to={`/detales/${doc.id}`} className="project p-4 h-fit hover:bg-gray-700 shadow-md duration-300  bg-black rounded-xl">
+              <p className="text-xl">
+                {doc.name.slice(0, 20)}
+                {doc.name.length > 20 && '...'}
+              </p>
               <span className="text-gray-400 border-b block pb-2 border-gray-400  ">Due by {doc.dueDate.toDate().toDateString()}</span>
               <span className="mt-2 block text-gray-400">Project assigned To</span>
               <div className="flex mt-2">

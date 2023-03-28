@@ -13,7 +13,7 @@ function App() {
   const { user } = useAuthContext();
 
   return (
-    <div className="mr-[400px] ml-[400px] ">
+    <div className="mx-10 xl:ml-[400px] lg:ml-[400px] max-w-[1200px]  ">
       {user && <NavBar />}
       <Routes>
         <Route path="/" exect element={user ? <Dashboard /> : <Navigate to={'/login'} />} />
@@ -22,8 +22,9 @@ function App() {
         <Route path="/create" element={user ? <Create /> : <Navigate to={'/login'} />} />
         <Route path="/detales/:id" element={user ? <Detales /> : <Navigate to={'/login'} />} />
       </Routes>
-      {user && <Sidebar />}
-      {user && <ActiveUser />}
+
+      {/* <div className="hidden lg:block xl:block">{user && <Sidebar />}</div> */}
+      <div className="hidden lg:block xl:block">{user && <ActiveUser />}</div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
 const useDocment = (col, id) => {
@@ -8,7 +8,7 @@ const useDocment = (col, id) => {
 
   // Data
   useEffect(() => {
-    const projectRef = doc(db, col, id);
+    let projectRef = doc(db, col, id);
 
     const unsubscribe = onSnapshot(
       projectRef,

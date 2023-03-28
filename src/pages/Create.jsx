@@ -6,6 +6,8 @@ import { Timestamp } from 'firebase/firestore';
 import useAuthContext from '../hooks/useAuthContext';
 import { useFirebase } from '../hooks/useFirebase';
 import { useNavigate } from 'react-router-dom';
+import { GoPackage } from 'react-icons/go';
+
 const categorys = [
   { value: 'sales', label: 'Sales' },
   { value: 'design', label: 'Design' },
@@ -84,8 +86,11 @@ const Create = () => {
 
   return (
     <div className="z-10 text-white mt-20 flex  flex-col place-items-center justify-center h-[80vh]">
-      <h1 className="text-4xl mb-20">~~ Create New Project ~~</h1>
-      <form onSubmit={submitHandler} className="w-[400px] ">
+      <h2 className="mt-20 text-xl font-sans flex mb-6 gap-2 place-items-center uppercase">
+        <GoPackage className="text-green-700" /> Create New Project
+      </h2>
+
+      <form onSubmit={submitHandler} className="w-[350px]  px-10">
         <label className="mb-4 block">
           <span className="block mb-1"> Name: </span>
           <input required type="text" className="p-1 text-black outline w-full rounded-sm" value={name} onChange={(e) => setName(e.target.value)} />
@@ -111,7 +116,7 @@ const Create = () => {
           <Select className="text-black" isMulti onChange={(op) => setAssignedUsers(op)} options={data} />
         </label>
 
-        <input type="submit" className="bg-white text-black w-full rounded-sm p-2 cursor-pointer hover:bg-green-400 duration-300 mt-6" value="Add Project" />
+        <input type="submit" className="bg-white mb-10 text-black w-full rounded-sm p-2 cursor-pointer hover:bg-green-400 duration-300 mt-6" value="Add Project" />
         {formError && (
           <p className="text-red-600 flex text-[19px] gap-1 place-items-center mt-2">
             <BiMessageSquareError /> {formError}

@@ -3,13 +3,16 @@ import React, { useState } from 'react';
 import { timestamp } from '../firebase/config';
 import useAuthContext from '../hooks/useAuthContext.js';
 import { useFirebase } from '../hooks/useFirebase';
+import { formatDistanceToNow } from 'date-fns';
 
 const Comments = ({ docInfo }) => {
   const [comment, setComment] = useState('');
   const { user } = useAuthContext();
+  const [pandding, setPandding] = useState(false);
   const { updateDocs, response } = useFirebase('projects');
 
   const handleSubmit = async (e) => {
+    setPandding(true);
     e.preventDefault();
     const commentInfo = {
       dispalyName: user.displayName,
@@ -22,10 +25,9 @@ const Comments = ({ docInfo }) => {
     await updateDocs(docInfo.id, {
       comments: [...docInfo.comments, commentInfo],
     });
-    console.log(docInfo.comments);
-
     if (!response.error) {
       setComment('');
+      setPandding(false);
     }
   };
 
@@ -40,11 +42,16 @@ const Comments = ({ docInfo }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             required></input>
-          <button className="bg-gray-500 rounded-sm px-6 hover:bg-green-500 duration-300">Send</button>
+          {!pandding && <button className="bg-gray-500 rounded-sm px-6 hover:bg-green-500 duration-300">Send</button>}
+          {pandding && (
+            <button disabled className="bg-gray-500 rounded-sm px-6 hover:bg-green-500 duration-300">
+              Sending...
+            </button>
+          )}
         </div>
       </form>
 
-      <div className="comments mt-10 h-[300px]  scrollbar  overflow-y-scroll ">
+      <div className="comments mt-10 h-[300px]  scrollbar  overflow-y-auto ">
         {docInfo &&
           docInfo.comments.map((comment) => {
             return (
@@ -55,7 +62,7 @@ const Comments = ({ docInfo }) => {
                   <div className="name&time flex text-sm capitalize">
                     <p>{comment.dispalyName}</p>
                     <p className="mx-2">-</p>
-                    <p className="text-gray-400">before 2days</p>
+                    <p className="text-gray-400">{formatDistanceToNow(comment.createAt.toDate(), { addSuffix: true })}</p>
                   </div>
                   <div className="contant mt-1">{comment.content}</div>
                 </div>
