@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Comments from '../components/Comments';
 import useDocment from '../hooks/useDocment';
 import { useFirebase } from '../hooks/useFirebase';
@@ -7,10 +7,19 @@ import { useFirebase } from '../hooks/useFirebase';
 const Detales = () => {
   const { id } = useParams();
   const { docData, error } = useDocment('projects', id);
-  const { deleteDoc } = useFirebase('projects');
+  const { deleteDocument, response } = useFirebase('projects');
+
+  const navigation = useNavigate();
+  const deltedMe = (id) => {
+    deleteDocument(id);
+    if (!response.error) {
+      navigation('/');
+    }
+  };
+
   return (
     <div className="mt-40 text-white h-[80vh] relative">
-      <button onClick={deleteDoc(docData.id)} className="bg-red-500 text-white p-2 absolute top-4 right-4 px-4 rounded-md">
+      <button onClick={() => deltedMe(docData.id)} className="bg-red-500 text-white p-2 absolute top-4 right-4 px-4 rounded-md">
         Delted
       </button>
       {docData && (

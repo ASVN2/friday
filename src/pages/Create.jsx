@@ -5,6 +5,7 @@ import { BiMessageSquareError } from 'react-icons/bi';
 import { Timestamp } from 'firebase/firestore';
 import useAuthContext from '../hooks/useAuthContext';
 import { useFirebase } from '../hooks/useFirebase';
+import { useNavigate } from 'react-router-dom';
 const categorys = [
   { value: 'sales', label: 'Sales' },
   { value: 'design', label: 'Design' },
@@ -24,6 +25,8 @@ const Create = () => {
   const { user } = useAuthContext();
   const { doc } = useCollection('users');
   const { addDocs, response } = useFirebase('projects');
+
+  const navigation = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -63,9 +66,11 @@ const Create = () => {
       comments: [],
     };
 
-    console.log(dataProject);
-
     await addDocs(dataProject);
+
+    if (!response.error) {
+      navigation('/');
+    }
   };
 
   useEffect(() => {
